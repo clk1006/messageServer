@@ -1,12 +1,57 @@
 <html>
     <head>
         <title>
-            Kommunikationsserver
+            Message Server
         </title>
+        <style>
+            #main{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+            }
+            #secT1{
+                width: 50%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .message{
+                width: 50vb;
+            }
+            .origin{
+                width: 50vb;
+                height: 10vh;
+            }
+            .sendMessage{
+                width: 50vb;
+                height: 10vh;
+            }
+        </style>
     </head>
     <body>
-        <p>
-            test
-        </p>
+        <div id="main">
+            <div id="secT1">
+                <input autofocus type="text" name="origin" id="origin" placeholder="Name des Absenders">
+                <br>
+                <textarea name="message" id="message" rows="5" placeholder="Nachricht"></textarea>
+                <br>
+                <button id="sendMessage">Nachricht Absenden</button>
+            </div>
+            <div id="secT1">
+
+            </div>
+        </div>
+        <script>
+            document.getElementById("sendMessage").addEventListener("click",()=>{
+                origin=document.getElementById("origin").value;
+                text=document.getElementById("message").value;
+                document.getElementById("message").value="";
+                let params=`origin=${origin}&text=${text}`;
+                let req=new XMLHttpRequest();
+                req.open("get","postMessage?"+params,true);
+                req.send(null);
+            },false);
+        </script>
     </body>
 </html>

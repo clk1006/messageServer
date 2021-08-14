@@ -14,13 +14,15 @@ app.use((req,res)=>{
         });
     }else if(req.url=="/getMessages"){
         res.json(messages);
-    }else if(req.url=="/postMessage"){
+    }else if(req.url.includes("/postMessage")){
+        req=req.url.substr(13).split("&");
         messages.push({
-            origin:req.params.origin,
-            text:req.params.text
+            origin:req[0].split("=")[1],
+            text:req[1].split("=")[1]
         });
+        console.log(messages);
     }else{
-        res.status(404).send("404")
+        res.status(404).send("404");
     }
 });
 app.listen(PORT,()=>{
