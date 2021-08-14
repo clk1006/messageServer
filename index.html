@@ -39,7 +39,7 @@
                 <button id="sendMessage">Nachricht Absenden</button>
             </div>
             <div id="secT1">
-
+                
             </div>
         </div>
         <script>
@@ -52,6 +52,14 @@
                 req.open("get","postMessage?"+params,true);
                 req.send(null);
             },false);
+            function getMessages(){
+                let req=new XMLHttpRequest();
+                req.open("get","getMessages",true);
+                req.onreadystatechange=(e)=>{
+                    window.messages=JSON.parse(e.target.responseText);
+                }
+                req.send();
+            }
         </script>
     </body>
 </html>

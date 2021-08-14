@@ -20,7 +20,6 @@ app.use((req,res)=>{
             origin:req[0].split("=")[1],
             text:req[1].split("=")[1]
         });
-        console.log(messages);
     }else{
         res.status(404).send("404");
     }
