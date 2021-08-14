@@ -10,36 +10,46 @@
                 display: flex;
                 flex-direction: row;
             }
-            #secT1{
+            .secT1{
                 width: 50%;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
+                overflow: hidden;
+                overflow-y: scroll;
             }
             .message{
-                width: 50vb;
+                width: 50vw;
             }
-            .origin{
-                width: 50vb;
+            .origin .sendMessage{
+                width: 50vw;
                 height: 10vh;
             }
-            .sendMessage{
-                width: 50vb;
-                height: 10vh;
+            .element{
+                width:45vw;
+                height:10vh;
+                overflow:hidden;
+                overflow-y: scroll;
+                border-width: 1pt;
+                border-radius: 3pt;
+                border-color: grey;
+                border-style: solid;
             }
         </style>
     </head>
     <body>
         <div id="main">
-            <div id="secT1">
+            <div class="secT1">
                 <input autofocus type="text" name="origin" id="origin" placeholder="Name des Absenders">
                 <br>
                 <textarea name="message" id="message" rows="5" placeholder="Nachricht"></textarea>
                 <br>
                 <button id="sendMessage">Nachricht Absenden</button>
             </div>
-            <div id="secT1">
-                
+            <div class="secT1" id=list>
+                <div class="element">
+                    <p>hi</p>
+                </div>
             </div>
         </div>
         <script>
@@ -57,9 +67,27 @@
                 req.open("get","getMessages",true);
                 req.onreadystatechange=(e)=>{
                     window.messages=JSON.parse(e.target.responseText);
+                    list=document.getElementById("list");
+                    while(list.hasChildNodes()){
+                        list.removeChild(list.childNodes[0]);
+                    }
+                    messages.forEach((x) => {
+                        let element=document.createElement("div");
+                        element.className="element";
+                        let absatz1=document.createElement("p");
+                        absatz1.appendChild(document.createElement("b").appendChild(document.createTextNode("Absender: ")));
+                        absatz1.appendChild(document.createTextNode(x.origin.replace("%20"," ")));
+                        element.appendChild(absatz1);
+                        let absatz2=document.createElement("p");
+                        absatz2.appendChild(document.createElement("b").appendChild(document.createTextNode("Nachricht: ")));
+                        absatz2.appendChild(document.createTextNode(x.text.replace("%20"," ")));
+                        element.appendChild(absatz2);
+                        list.appendChild(element);
+                    });
                 }
                 req.send();
             }
+            window.setInterval(getMessages,100);
         </script>
     </body>
 </html>
