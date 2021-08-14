@@ -59,12 +59,12 @@
                 document.getElementById("message").value="";
                 let params=`origin=${origin}&text=${text}`;
                 let req=new XMLHttpRequest();
-                req.open("get","postMessage?"+params,true);
+                req.open("get","https://crypt-server.vercel.app/postMessage?"+params,true);
                 req.send(null);
             },false);
             function getMessages(){
                 let req=new XMLHttpRequest();
-                req.open("get","getMessages",true);
+                req.open("get","https://crypt-server.vercel.app/getMessages",true);
                 req.onreadystatechange=(e)=>{
                     window.messages=JSON.parse(e.target.responseText);
                     list=document.getElementById("list");
