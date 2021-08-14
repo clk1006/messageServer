@@ -12,7 +12,7 @@ app.use((req,res)=>{
             }
             res.status(200).send(data);
         });
-    }else if(req.url=="/getMessages"){
+    }else if(req.url.includes("/getMessages")){
         res.json(messages);
     }else if(req.url.includes("/postMessage")){
         req=req.url.substr(13).split("&");
