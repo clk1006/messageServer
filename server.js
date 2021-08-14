@@ -2,7 +2,7 @@ let express=require('express');
 let fs=require('fs');
 const PORT=8080;
 let app=express();
-let messages=[];
+let messages=require('./messages.json');
 app.use((req,res)=>{
     if(req.url=="/"){
         fs.readFile("index.html","utf8",(err,data)=>{
@@ -16,10 +16,14 @@ app.use((req,res)=>{
         res.json(messages);
     }else if(req.url.includes("/postMessage")){
         req=req.url.substr(13).split("&");
-        messages.push({
+        messages.unshift({
             origin:req[0].split("=")[1],
             text:req[1].split("=")[1]
         });
+        messages=messages.slice(0,5);
+        fs.writeFile("messages.json",JSON.stringify(messages), (err) => {
+			if (err) console.log(err);
+		});
     }else{
         res.status(404).send("404");
     }
