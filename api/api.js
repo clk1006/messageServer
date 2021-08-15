@@ -3,9 +3,12 @@ let messages={
     messages:[]
 }
 module.exports=(req,res)=>{
-    if(req.query.type=="get"){
-        console.log(messages);
-        res.status(200).json(messages);
+    if(req.query.type=="fetch"){
+        if(messages.i==req.query.i){
+            res.status(200).json(messages.i);
+        }else{
+            res.status(200).json(messages);
+        }
     }
     else{
         let message={

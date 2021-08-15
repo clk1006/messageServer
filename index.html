@@ -58,11 +58,7 @@
                 <br>
                 <button id="sendMessage">Nachricht Absenden</button>
             </div>
-            <div class="secT1" id=list>
-                <div class="element">
-                    <p>hi</p>
-                </div>
-            </div>
+            <div class="secT1" id=list></div>
         </div>
         <script>
             document.getElementById("sendMessage").addEventListener("click",()=>{
@@ -74,15 +70,15 @@
                 req.open("get","api/api?type=post&"+params,true);
                 req.send(null);
             },false);
+            window.i=-1;
             function getMessages(){
                 let req=new XMLHttpRequest();
-                req.open("get","api/api?type=get",true);
+                req.open("get",`api/api?type=fetch&i=${i}`,true);
                 req.onreadystatechange=(e)=>{
-                    window.messages=JSON.parse(e.target.responseText);
-                    if(window.i!=messages.i){
+                    if(e.target.responseText!=i){
+                        let messages=JSON.parse(e.target.responseText);
                         i=messages.i;
                         messages=messages.messages;
-                        console.log("t");
                         list=document.getElementById("list");
                         while(list.hasChildNodes()){
                             list.removeChild(list.childNodes[0]);
@@ -107,11 +103,13 @@
                             list.appendChild(element);
                             list.appendChild(document.createElement("br"));
                         });
+                        
                     }
+                    
                 }
                 req.send();
             }
-            window.setInterval(getMessages,100);
+            window.setInterval(getMessages,2000);
         </script>
     </body>
 </html>
