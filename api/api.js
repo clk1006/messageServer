@@ -4,6 +4,7 @@ let messages={
 }
 module.exports=(req,res)=>{
     if(req.query.type=="get"){
+        console.log(messages);
         res.status(200).json(messages);
     }
     else{
@@ -12,7 +13,7 @@ module.exports=(req,res)=>{
             text:req.query.text
         }
         messages.messages.unshift(message);
-        message.messages=messages.messages.slice(0,6);
+        messages.messages=messages.messages.slice(0,6);
         res.status(200).json(messages);
         messages.i++;
     }
