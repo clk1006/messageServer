@@ -71,12 +71,12 @@
                 document.getElementById("message").value="";
                 let params=`origin=${origin}&text=${text}`;
                 let req=new XMLHttpRequest();
-                req.open("get","postMessage?"+params,true);
+                req.open("get","api/postMessage?"+params,true);
                 req.send(null);
             },false);
             function getMessages(){
                 let req=new XMLHttpRequest();
-                req.open("get","getMessages",true);
+                req.open("get","api/getMessages",true);
                 req.onreadystatechange=(e)=>{
                     window.messages=JSON.parse(e.target.responseText);
                     if(window.i!=messages.i){
