@@ -4,6 +4,9 @@
             Message Server
         </title>
         <style>
+            body{
+                padding: 0%;
+            }
             #main{
                 width: 100%;
                 height: 100%;
@@ -15,8 +18,6 @@
                 height: 100%;
                 display: flex;
                 flex-direction: column;
-                overflow: hidden;
-                overflow-y: scroll;
             }
             .message{
                 width: 50vw;
@@ -26,20 +27,31 @@
                 height: 10vh;
             }
             .element{
-                width:45vw;
-                height:10vh;
+                width:49vw;
+                height:15vh;
                 overflow:hidden;
                 overflow-y: scroll;
                 border-width: 1pt;
                 border-radius: 3pt;
                 border-color: grey;
                 border-style: solid;
+                background-color:lightslategray;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #mes{
+                width: 100%;
+                height: 10vh;
+                border-width: 0pt;
+                background-color:slategray;
+            }
+            #list{
+                background-color: slategray;
             }
         </style>
     </head>
     <body>
         <div id="main">
-            <div class="secT1">
+            <div class="secT1" id="form">
                 <input autofocus type="text" name="origin" id="origin" placeholder="Name des Absenders">
                 <br>
                 <textarea name="message" id="message" rows="5" placeholder="Nachricht"></textarea>
@@ -59,31 +71,43 @@
                 document.getElementById("message").value="";
                 let params=`origin=${origin}&text=${text}`;
                 let req=new XMLHttpRequest();
-                req.open("get","https://crypt-server.vercel.app/postMessage?"+params,true);
+                req.open("get","postMessage?"+params,true);
                 req.send(null);
             },false);
             function getMessages(){
                 let req=new XMLHttpRequest();
-                req.open("get","https://crypt-server.vercel.app/getMessages",true);
+                req.open("get","getMessages",true);
                 req.onreadystatechange=(e)=>{
                     window.messages=JSON.parse(e.target.responseText);
-                    list=document.getElementById("list");
-                    while(list.hasChildNodes()){
-                        list.removeChild(list.childNodes[0]);
+                    if(window.i!=messages[0]){
+                        i=messages[0];
+                        messages=messages.slice(1);
+                        console.log("t");
+                        list=document.getElementById("list");
+                        while(list.hasChildNodes()){
+                            list.removeChild(list.childNodes[0]);
+                        }
+                        messages.forEach((x) => {
+                            let element=document.createElement("div");
+                            element.className="element";
+                            let b1=document.createElement("b");
+                            b1.appendChild(document.createTextNode("Absender: "));
+                            element.appendChild(b1);
+                            element.appendChild(document.createTextNode(x.origin));
+                            element.appendChild(document.createElement("br"));
+                            let b2=document.createElement("b");
+                            b2.appendChild(document.createTextNode("Nachricht: "));
+                            element.appendChild(b2);
+                            element.appendChild(document.createElement("br"));
+                            let mes=document.createElement("textarea");
+                            mes.value=x.text;
+                            mes.readOnly=true;
+                            mes.id="mes";
+                            element.appendChild(mes);
+                            list.appendChild(element);
+                            list.appendChild(document.createElement("br"));
+                        });
                     }
-                    messages.forEach((x) => {
-                        let element=document.createElement("div");
-                        element.className="element";
-                        let absatz1=document.createElement("p");
-                        absatz1.appendChild(document.createElement("b").appendChild(document.createTextNode("Absender: ")));
-                        absatz1.appendChild(document.createTextNode(x.origin.replace("%20"," ")));
-                        element.appendChild(absatz1);
-                        let absatz2=document.createElement("p");
-                        absatz2.appendChild(document.createElement("b").appendChild(document.createTextNode("Nachricht: ")));
-                        absatz2.appendChild(document.createTextNode(x.text.replace("%20"," ")));
-                        element.appendChild(absatz2);
-                        list.appendChild(element);
-                    });
                 }
                 req.send();
             }
