@@ -9,7 +9,7 @@ module.exports=(req,res)=>{
     else{
         let message={
             origin:req.query.origin,
-            text:req.qery.text
+            text:req.query.text
         }
         messages.messages.unshift(message);
         message.messages=messages.messages.slice(0,6);
