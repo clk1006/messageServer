@@ -10,6 +10,11 @@ module.exports=(req,res)=>{
             res.status(200).json(messages);
         }
     }
+    else if(req.query.type=="delete"){
+        messages.i=0;
+        messages.messages=[];
+        res.status(200).send("done");
+    }
     else{
         let message={
             origin:req.query.origin,
