@@ -78,7 +78,7 @@
                         let messages=JSON.parse(e.target.responseText);
                         i=messages.i;
                         messages=messages.messages;
-                        list=document.getElementById("list");
+                        let list=document.getElementById("list");
                         while(list.hasChildNodes()){
                             list.removeChild(list.childNodes[0]);
                         }
@@ -102,7 +102,7 @@
                             list.appendChild(element);
                             list.appendChild(document.createElement("br"));
                         });
-                        
+                        list.style.height=`${70*messages.length}pt`;
                     }
                     
                 }
