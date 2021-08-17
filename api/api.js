@@ -16,7 +16,6 @@ module.exports=(req,res)=>{
             text:req.query.text
         }
         messages.messages.unshift(message);
-        messages.messages=messages.messages.slice(0,6);
         res.status(200).json(messages);
         messages.i++;
     }
