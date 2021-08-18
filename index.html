@@ -57,8 +57,6 @@
                 <textarea name="message" id="message" rows="5" placeholder="Nachricht"></textarea>
                 <br>
                 <button id="sendMessage">Nachricht Absenden</button>
-                <!--<br><br>
-                <button id="mod">Nachrichten Moderieren</button>-->
             </div>
             <div class="secT1" id=list></div>
         </div>
@@ -72,9 +70,6 @@
                 req.open("get","api/api?type=post&"+params,true);
                 req.send(null);
             },false);
-            /*document.getElementById("mod").addEventListener("click",()=>{
-                location.href="https://crypt-server.vercel.app/pw_check.html";
-            },false);*/
             window.i=-1;
             function getMessages(){
                 let req=new XMLHttpRequest();
