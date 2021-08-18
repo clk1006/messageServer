@@ -75,6 +75,7 @@
             tokenReq.onreadystatechange=(e)=>{
                 window.token=e.target.responseText;
             }
+            tokenReq.send();
             window.i=-1;
             function getMessages(){
                 let req=new XMLHttpRequest();
