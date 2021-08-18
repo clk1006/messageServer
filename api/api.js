@@ -47,6 +47,6 @@ module.exports=(req,res)=>{
         };
         messages.messages.unshift(message);
         res.status(204).send();
-        messages.i++;
+        messages.state++;
     }
 }
