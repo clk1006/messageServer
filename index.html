@@ -77,7 +77,7 @@
                 req.onreadystatechange=(e)=>{
                     if(e.target.responseText!=i){
                         let messages=JSON.parse(e.target.responseText);
-                        i=messages.i;
+                        i=messages.state;
                         messages=messages.messages;
                         let list=document.getElementById("list");
                         while(list.hasChildNodes()){
