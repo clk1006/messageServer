@@ -13,7 +13,7 @@ module.exports=(req,res)=>{
     }
     else if(req.query.type=="delete"){
         if(req.query.pw==process.env.admin_pw){
-            if(req.ids=="all"){
+            if(req.query.ids=="all"){
                 messages.i=0;
                 messages.messages=[];
             }
