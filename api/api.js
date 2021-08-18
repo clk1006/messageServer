@@ -13,9 +13,18 @@ module.exports=(req,res)=>{
     }
     else if(req.query.type=="delete"){
         if(req.query.pw==process.env.admin_pw){
-            messages.i=0;
-            messages.messages=[];
-            res.status(200).send("Request accepted");
+            if(req.ids=="all"){
+                messages.state=0;
+                messages.messages=[];
+            }
+            else{
+                let ids=JSON.parse(req.ids);
+                messages.state++;
+                messages.messages=messages.messages.filter((x)=>{
+                    return (!ids.includes(x.id));
+                });
+            }
+            res.status(204).send();
         }
         else{
             res.status(401).send("Request denied - wrong password")
@@ -37,7 +46,7 @@ module.exports=(req,res)=>{
             id:id
         };
         messages.messages.unshift(message);
-        res.status(200).json(messages);
+        res.status(204).send();
         messages.i++;
     }
 }
