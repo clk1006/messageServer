@@ -75,7 +75,7 @@
                 let req=new XMLHttpRequest();
                 req.open("get",`api/api?type=fetch&i=${i}`,true);
                 req.onreadystatechange=(e)=>{
-                    if(e.target.responseText!=i){
+                    if(e.target.responseText!=""&&e.target.responseText!=i){
                         let messages=JSON.parse(e.target.responseText);
                         window.i=messages.i;
                         messages=messages.messages;
