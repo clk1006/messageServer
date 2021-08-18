@@ -1,12 +1,12 @@
 let fs=require ('fs');
 let messages={
-    state:0,
+    i:0,
     messages:[]
 }
 module.exports=(req,res)=>{
     if(req.query.type=="fetch"){
-        if(messages.state==req.query.i){
-            res.status(200).json(messages.state);
+        if(messages.i==req.query.i){
+            res.status(200).json(messages.i);
         }else{
             res.status(200).json(messages);
         }
@@ -14,12 +14,12 @@ module.exports=(req,res)=>{
     else if(req.query.type=="delete"){
         if(req.query.pw==process.env.admin_pw){
             if(req.ids=="all"){
-                messages.state=0;
+                messages.i=0;
                 messages.messages=[];
             }
             else{
                 let ids=JSON.parse(req.ids);
-                messages.state++;
+                messages.i++;
                 messages.messages=messages.messages.filter((x)=>{
                     return (!ids.includes(x.id));
                 });
@@ -31,13 +31,12 @@ module.exports=(req,res)=>{
         }
     }
     else{
-        let id=messages.state;
-        while(!(messages.messages.reduce((pre,x)=>{
-            if(pre===x.id){
-                return true;
-            }
-            return pre;
-        },id)===true)){
+        let id=messages.i;
+        const includesId=(arr,id)=>{
+            arrIds=arr.map((x)=>x.id);
+            return arrIds.includes(id);
+        }
+        while(includesId(messages.messages,id)){
             id++;
         }
         let message={
@@ -47,6 +46,6 @@ module.exports=(req,res)=>{
         };
         messages.messages.unshift(message);
         res.status(204).send();
-        messages.state++;
+        messages.i++;
     }
 }
