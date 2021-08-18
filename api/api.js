@@ -18,7 +18,7 @@ module.exports=(req,res)=>{
                 messages.messages=[];
             }
             else{
-                let ids=JSON.parse(req.ids);
+                let ids=JSON.parse(req.query.ids);
                 messages.i++;
                 messages.messages=messages.messages.filter((x)=>{
                     return (!ids.includes(x.id));
