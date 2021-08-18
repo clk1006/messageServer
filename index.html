@@ -67,9 +67,14 @@
                 document.getElementById("message").value="";
                 let params=`origin=${origin}&text=${text}`;
                 let req=new XMLHttpRequest();
-                req.open("get","api/api?type=post&"+params,true);
-                req.send(null);
+                req.open("get",`api/api?type=post&token=${window.token}&${params}`,true);
+                req.send();
             },false);
+            let tokenReq=new XMLHttpRequest();
+            tokenReq.open("get","api/api?type=getToken",true);
+            tokenReq.onreadystatechange=(e)=>{
+                window.token=e.target.responseText;
+            }
             window.i=-1;
             function getMessages(){
                 let req=new XMLHttpRequest();

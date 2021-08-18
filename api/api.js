@@ -1,7 +1,20 @@
-let fs=require ('fs');
 let messages={
     i:0,
     messages:[]
+}
+let tokens=[];
+let whiteList=[];
+let blackList=[];
+let filterType="";
+const createToken=(tokens)=>{
+    let token="";
+    while(token.length<15){
+        token+=Math.floor(Math.random()*10);
+    }
+    if(tokens.includes(token)){
+        return createToken(tokens);
+    }
+    return token;
 }
 module.exports=(req,res)=>{
     if(req.query.type=="fetch"){
@@ -27,25 +40,48 @@ module.exports=(req,res)=>{
             res.status(204).send();
         }
         else{
-            res.status(401).send("Request denied - wrong password")
+            res.status(401).send("Request denied - wrong password");
+        }
+    }
+    else if(req.query.type=="getToken"){
+        let token=createToken(tokens);
+        tokens.push(token);
+        res.status(200).send(token);
+    }
+    else if(req.query.type=="mod"){
+        if(req.query.pw==process.env.admin_pw){
+            if(req.query.whiteList!="") whiteList=req.query.whiteList;
+            if(req.query.blackList!="") blackList=req.query.blackList;
+            filterType=req.query.filterType;
+            res.status(200).json([whiteList,blackList,filterType]);
+        }
+        else{
+            res.status(401).send("Request denied - wrong password");
         }
     }
     else{
-        let id=messages.i;
-        const includesId=(arr,id)=>{
-            arrIds=arr.map((x)=>x.id);
-            return arrIds.includes(id);
+        const token=req.query.token;
+        if(tokens.includes(token)&&(filterType==""||filterType=="white"&&whiteList.includes(tokens.find(token))||filterType=="black"&&(!blackList.includes(tokens.find(token))))){
+            let id=messages.i;
+            const includesId=(arr,id)=>{
+                arrIds=arr.map((x)=>x.id);
+                return arrIds.includes(id);
+            }
+            while(includesId(messages.messages,id)){
+                id++;
+            }
+            let message={
+                origin:req.query.origin,
+                text:req.query.text,
+                id:id,
+                userID:tokens.find(token)
+            };
+            messages.messages.unshift(message);
+            res.status(204).send();
+            messages.i++;
         }
-        while(includesId(messages.messages,id)){
-            id++;
+        else{
+            res.status(401).send("Request denied");
         }
-        let message={
-            origin:req.query.origin,
-            text:req.query.text,
-            id:id
-        };
-        messages.messages.unshift(message);
-        res.status(204).send();
-        messages.i++;
     }
 }
