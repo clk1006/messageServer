@@ -6,7 +6,7 @@ let messages={
 module.exports=(req,res)=>{
     if(req.query.type=="fetch"){
         if(messages.state==req.query.i){
-            res.status(200).json(messages.i);
+            res.status(200).json(messages.state);
         }else{
             res.status(200).json(messages);
         }
@@ -32,12 +32,12 @@ module.exports=(req,res)=>{
     }
     else{
         let id=messages.state;
-        while(messages.messages.reduce((pre,x)=>{
+        while(!(messages.messages.reduce((pre,x)=>{
             if(pre===x.id){
                 return true;
             }
             return pre;
-        },id)){
+        },id)===true)){
             id++;
         }
         let message={
