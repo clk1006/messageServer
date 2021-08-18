@@ -61,7 +61,8 @@ module.exports=(req,res)=>{
     }
     else{
         const token=req.query.token;
-        if(tokens.includes(token)&&(filterType==""||filterType=="white"&&whiteList.includes(tokens.find(token))||filterType=="black"&&(!blackList.includes(tokens.find(token))))){
+        const tokenF=(x)=>x==token;
+        if(tokens.includes(token)&&(filterType==""||filterType=="white"&&whiteList.includes(tokens.findIndex(tokenF))||filterType=="black"&&(!blackList.includes(tokens.findIndex(tokenF))))){
             let id=messages.i;
             const includesId=(arr,id)=>{
                 arrIds=arr.map((x)=>x.id);
@@ -74,7 +75,7 @@ module.exports=(req,res)=>{
                 origin:req.query.origin,
                 text:req.query.text,
                 id:id,
-                userID:tokens.find(token)
+                userID:tokens.findIndex(tokenF)
             };
             messages.messages.unshift(message);
             res.status(204).send();
