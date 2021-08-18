@@ -11,10 +11,15 @@ module.exports=(req,res)=>{
             res.status(200).json(messages);
         }
     }
-    else if(req.query.type=="delete"&req.query.pw==process.env.admin_pw){
-        messages.i=0;
-        messages.messages=[];
-        res.status(200).send("done");
+    else if(req.query.type=="delete"){
+        if(req.query.pw==process.env.admin_pw){
+            messages.i=0;
+            messages.messages=[];
+            res.status(200).send("Request accepted");
+        }
+        else{
+            res.status(401).send("Request denied - wrong password")
+        }
     }
     else{
         let id=messages.state;
