@@ -50,9 +50,9 @@ module.exports=(req,res)=>{
     }
     else if(req.query.type=="mod"){
         if(req.query.pw==process.env.admin_pw){
-            if(req.query.whiteList!="") whiteList=req.query.whiteList;
-            if(req.query.blackList!="") blackList=req.query.blackList;
-            filterType=req.query.filterType;
+            if(req.query.whiteList!=null) whiteList=req.query.whiteList;
+            if(req.query.blackList!=null) blackList=req.query.blackList;
+            if(req.query.filterType!=null) filterType=req.query.filterType
             res.status(200).json([whiteList,blackList,filterType]);
         }
         else{
