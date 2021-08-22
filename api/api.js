@@ -1,7 +1,5 @@
 let storage=require('storage.json');
-let whiteList=[];
-let blackList=[];
-let filterType="";
+let fs=require('fs');
 const createToken=(tokens)=>{
     let token="";
     while(token.length<15){
@@ -11,6 +9,14 @@ const createToken=(tokens)=>{
         return createToken(tokens);
     }
     return token;
+}
+const rewriteFile=()=>{
+    fs.writeFile("storage.json",JSON.stringify(storage),(err)=>{
+        if(err){
+            return 1
+        }
+    });
+    return 0
 }
 module.exports=(req,res)=>{
     if(req.query.type=="fetch"){
@@ -38,27 +44,30 @@ module.exports=(req,res)=>{
         else{
             res.status(401).send("Request denied - wrong password");
         }
+        rewriteFile();
     }
     else if(req.query.type=="getToken"){
         let token=createToken(storage.tokens);
         storage.tokens.push(token);
         res.status(200).send(token);
+        rewriteFile();
     }
     else if(req.query.type=="mod"){
         if(req.query.pw==process.env.admin_pw){
-            if(req.query.whiteList!=null) whiteList=req.query.whiteList;
-            if(req.query.blackList!=null) blackList=req.query.blackList;
-            if(req.query.filterType!=null) filterType=req.query.filterType
-            res.status(200).json([whiteList,blackList,filterType]);
+            if(req.query.whiteList!=null) storage.whiteList=req.query.whiteList;
+            if(req.query.blackList!=null) storage.blackList=req.query.blackList;
+            if(req.query.filterType!=null) storage.filterType=req.query.filterType
+            res.status(200).json([storage.whiteList,storage.blackList,storage.filterType]);
         }
         else{
             res.status(401).send("Request denied - wrong password");
         }
+        rewriteFile();
     }
     else{
         const token=req.query.token;
         const tokenF=(x)=>x==token;
-        if(storage.tokens.includes(token)&&(filterType==""||filterType=="white"&&whiteList.includes(storage.tokens.findIndex(tokenF))||filterType=="black"&&(!blackList.includes(storage.tokens.findIndex(tokenF))))){
+        if(storage.tokens.includes(token)&&(storage.filterType==""||storage.filterType=="white"&&storage.whiteList.includes(storage.tokens.findIndex(tokenF))||storage.filterType=="black"&&(!storage.blackList.includes(storage.tokens.findIndex(tokenF))))){
             let id=storage.messages.i;
             const includesId=(arr,id)=>{
                 arrIds=arr.map((x)=>x.id);
@@ -80,5 +89,6 @@ module.exports=(req,res)=>{
         else{
             res.status(401).send("Request denied");
         }
+        rewriteFile();
     }
 }
