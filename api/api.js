@@ -56,8 +56,22 @@ module.exports=(req,res)=>{
         if(req.query.pw==process.env.admin_pw){
             if(req.query.whiteList!=null) storage.whiteList=req.query.whiteList;
             if(req.query.blackList!=null) storage.blackList=req.query.blackList;
-            if(req.query.filterType!=null) storage.filterType=req.query.filterType
+            if(req.query.filterType!=null) storage.filterType=req.query.filterType;
             res.status(200).json([storage.whiteList,storage.blackList,storage.filterType]);
+        }
+        else{
+            res.status(401).send("Request denied - wrong password");
+        }
+        rewriteFile();
+    }
+    else if(req.query.type=="readFile"){
+        if(req.query.pw==process.env.admin_pw){
+            fs.readFile("./storage.json",(err,data)=>{
+                if(err){
+                    return;
+                }
+                res.status(200).send(data);
+            })
         }
         else{
             res.status(401).send("Request denied - wrong password");
