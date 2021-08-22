@@ -1,4 +1,4 @@
-let storage=require('storage.json');
+let storage=require('./storage.json');
 let fs=require('fs');
 const createToken=(tokens)=>{
     let token="";
@@ -11,7 +11,7 @@ const createToken=(tokens)=>{
     return token;
 }
 const rewriteFile=()=>{
-    fs.writeFile("storage.json",JSON.stringify(storage),(err)=>{
+    fs.writeFile("./storage.json",JSON.stringify(storage),(err)=>{
         if(err){
             return 1
         }
