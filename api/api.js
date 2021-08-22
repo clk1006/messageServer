@@ -11,7 +11,7 @@ const createToken=(tokens)=>{
     return token;
 }
 const rewriteFile=()=>{
-    fs.writeFile("./storage.json",JSON.stringify(storage),(err)=>{
+    fs.writeFile("storage.json",JSON.stringify(storage),(err)=>{
         if(err){
             return 1
         }
@@ -66,7 +66,7 @@ module.exports=(req,res)=>{
     }
     else if(req.query.type=="readFile"){
         if(req.query.pw==process.env.admin_pw){
-            fs.readFile("./storage.json",(err,data)=>{
+            fs.readFile("storage.json",(err,data)=>{
                 if(err){
                     return;
                 }
@@ -76,7 +76,6 @@ module.exports=(req,res)=>{
         else{
             res.status(401).send("Request denied - wrong password");
         }
-        rewriteFile();
     }
     else{
         const token=req.query.token;
