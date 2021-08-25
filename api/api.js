@@ -27,8 +27,11 @@ module.exports=async(req,res)=>{
         data.insertOne({init:1});
     }
     else{
+        console.log("initialized")
         storage=await data.findOne({messages:{}});
     }
+    res.status(200).send(0);
+    /*
     if(req.query.type=="fetch"){
         if(storage.messages.i==req.query.i){
             res.status(200).json(storage.messages.i);
@@ -109,5 +112,5 @@ module.exports=async(req,res)=>{
         else{
             res.status(401).send("Request denied");
         }
-    }
+    }*/
 }
