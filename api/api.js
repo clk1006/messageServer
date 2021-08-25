@@ -31,8 +31,7 @@ module.exports=async(req,res)=>{
         storage=await data.findOne({id:"storage"});
         console.log(JSON.stringify(storage));
     }
-    res.status(200).send(0);
-    /*
+    let storageInit=JSON.parse(JSON.stringify(storage));
     if(req.query.type=="fetch"){
         if(storage.messages.i==req.query.i){
             res.status(200).json(storage.messages.i);
@@ -113,5 +112,6 @@ module.exports=async(req,res)=>{
         else{
             res.status(401).send("Request denied");
         }
-    }*/
+    }
+    data.updateOne(storageInit,{$set:storage});
 }
