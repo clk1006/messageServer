@@ -1,3 +1,4 @@
+const dbClient=require("./mongodb.js")
 let messages={
     i:0,
     messages:[]
