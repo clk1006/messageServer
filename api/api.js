@@ -23,10 +23,11 @@ module.exports=async(req,res)=>{
     const client=await dbClient;
     const data=client.db().collection("data");
     if((await data.find({init:1}).toArray()).length!=1){
+        data.insertOne(storage);
         data.insertOne({init:1});
     }
     else{
-        storage=await data.findOne({measages:{}});
+        storage=await data.findOne({messages:{}});
     }
     if(req.query.type=="fetch"){
         if(storage.messages.i==req.query.i){
