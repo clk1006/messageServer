@@ -20,7 +20,8 @@ const createToken=(tokens)=>{
     return token;
 }
 module.exports=async(req,res)=>{
-    const data=(await dbClient).db().collection(data);
+    const client=await dbClient;
+    const data=client.db().collection(data);
     if((await data.find({init:1}).toArray()).length!=1){
         data.insertOne({init:1});
     }
