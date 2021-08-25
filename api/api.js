@@ -27,8 +27,8 @@ module.exports=async(req,res)=>{
         data.insertOne({init:1});
     }
     else{
-        console.log("initialized")
         storage=await data.findOne({messages:{}});
+        console.log(JSON.stringify(storage));
     }
     res.status(200).send(0);
     /*
