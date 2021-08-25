@@ -113,5 +113,5 @@ module.exports=async(req,res)=>{
             res.status(401).send("Request denied");
         }
     }
-    data.updateOne(storageInit,{$set:storage});
+    data.updateOne({id:"storage"},{$set:storage});
 }
