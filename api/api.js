@@ -1,5 +1,6 @@
 const dbClient=require("./mongodb.js")
 let storage={
+    id:"storage",
     messages:{
         i:0,
         messages:[]
@@ -27,9 +28,7 @@ module.exports=async(req,res)=>{
         data.insertOne({init:1});
     }
     else{
-        await data.findOne({messages:{}},(err,result)=>{
-            storage=result;
-        });
+        storage=await data.findOne({id:"storage"});
         console.log(JSON.stringify(storage));
     }
     res.status(200).send(0);
