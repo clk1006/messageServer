@@ -27,7 +27,9 @@ module.exports=async(req,res)=>{
         data.insertOne({init:1});
     }
     else{
-        storage=await data.findOne({messages:{}});
+        await data.findOne({messages:{}},(err,result)=>{
+            storage=result;
+        });
         console.log(JSON.stringify(storage));
     }
     res.status(200).send(0);
