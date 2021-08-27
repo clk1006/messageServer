@@ -1,13 +1,10 @@
 {
-  "name": "server-kommunikation",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "node server.js"
-  },
+  "name": "crypt-server",
+  "version": "1.0",
+  "description": "Simple server built to transfer messages without restrictions(apart from moderation functions)",
+  "main": "index.html",
   "keywords": [],
-  "author": "",
+  "author": "Caspar Levin Kiehn",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
