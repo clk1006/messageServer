@@ -57,6 +57,9 @@ module.exports=async(req,res)=>{
             if(req.query.delType=="save") storage.messages.messages=storage.messages.messages.filter(x=>selected.includes(x));
             else storage.messages.messages=storage.messages.messages.filter(x=>!selected.includes(x));
             storage.messages.i++;
+            if(storage.messages.messages.length==0){
+                storage.messages.i=0
+            }
             res.status(200).json(storage.messages.messages);
         }
         else{
@@ -96,18 +99,10 @@ module.exports=async(req,res)=>{
         const token=req.query.token;
         const tokenF=(x)=>x==token;
         if(storage.tokens.includes(token)&&(storage.filterType==""||storage.filterType=="white"&&storage.whiteList.includes(storage.tokens.findIndex(tokenF))||storage.filterType=="black"&&(!storage.blackList.includes(storage.tokens.findIndex(tokenF))))){
-            let id=storage.messages.i;
-            const includesId=(arr,id)=>{
-                arrIds=arr.map((x)=>x.id);
-                return arrIds.includes(id);
-            }
-            while(includesId(storage.messages.messages,id)){
-                id++;
-            }
             let message={
                 origin:req.query.origin,
                 text:req.query.text,
-                id:id,
+                id:storage.messages.i,
                 userID:storage.tokens.findIndex(tokenF)
             };
             storage.messages.messages.unshift(message);
