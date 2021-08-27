@@ -31,7 +31,6 @@ module.exports=async(req,res)=>{
         storage=await data.findOne({id:"storage"});
         console.log(JSON.stringify(storage));
     }
-    let storageInit=JSON.parse(JSON.stringify(storage));
     if(req.query.type=="fetch"){
         if(storage.messages.i==req.query.i){
             res.status(200).json(storage.messages.i);
@@ -41,18 +40,24 @@ module.exports=async(req,res)=>{
     }
     else if(req.query.type=="delete"){
         if(req.query.pw==process.env.admin_pw){
+            let selected=[];
             if(req.query.ids=="all"){
-                storage.messages.i=0;
-                storage.messages.messages=[];
+                selected=storage.messages.messages;
             }
             else{
                 let ids=JSON.parse(req.query.ids);
-                storage.messages.i++;
-                storage.messages.messages=storage.messages.messages.filter((x)=>{
-                    return (!ids.includes(x.id));
+                selected=storage.messages.messages.filter(x=>{
+                    let isSelected=false;
+                    ids.forEach(id => {
+                        if(id.isArray()&&id[0]<x.i&&id[1]>x.i||id==x.i) isSelected=true;
+                    });
+                    return isSelected;
                 });
             }
-            res.status(204).send();
+            if(req.query.delType=="save") storage.messages.messages=storage.messages.messages.filter(x=>selected.includes(x));
+            else storage.messages.messages=storage.messages.messages.filter(x=>!selected.includes(x));
+            storage.messages.i++;
+            res.status(200).json(storage.messages.messages);
         }
         else{
             res.status(401).send("Request denied - wrong password");
