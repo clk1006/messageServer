@@ -49,7 +49,7 @@ module.exports=async(req,res)=>{
                 selected=storage.messages.messages.filter(x=>{
                     let isSelected=false;
                     ids.forEach(id => {
-                        if(Array.isArray(id)&&id[0]<=x.i&&id[1]>=x.i||id==x.i) isSelected=true;
+                        if(Array.isArray(id)&&id[0]<=x.id&&id[1]>=x.id||id==x.id) isSelected=true;
                     });
                     return isSelected;
                 });
